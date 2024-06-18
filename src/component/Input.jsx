@@ -1,28 +1,38 @@
 import { useState } from "react";
-const Input = ({ setTotalSeconds, resetTimer }) => {
-  const [inputSeconds, setInputSeconds] = useState("");
-  const handleChange = (e) =>{
-    setInputSeconds(e.target.value);
-  }
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    if(!isNaN(inputSeconds)){
-        setTotalSeconds(parseInt(inputSeconds))
-        resetTimer()
+const Input = ({ getRemainingTime, setTimer }) => {
+  const [seconds, setSeconds] = useState("");
+  const handleChange = (e) => {
+    setSeconds(e.target.value);
+  };
+  const submitSeconds = (e) => {
+    e.preventDefault();
+    if (seconds !== "") {
+
+      setTimer(getRemainingTime(seconds));
+
+      setSeconds({
+        seconds: "",
+      });
+
+
+    } else {
+      alert("seconds field cannot be empty!!");
     }
-  }
+  };
   return (
     <div>
-      <form className="inputForm" onSubmit={handleSubmit}>
+      <form className="inputForm">
         <input
           className="inputGroup"
           type="number"
-          value={inputSeconds}
+          value={seconds}
           onChange={handleChange}
           name="secondInput"
           placeholder="enter number of seconds"
         />
-        <button type="submit">Go</button>
+        <button type="submit" onClick={submitSeconds}>
+          Go
+        </button>
       </form>
     </div>
   );

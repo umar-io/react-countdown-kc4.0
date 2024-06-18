@@ -1,16 +1,14 @@
-const Display = ({ remainingSeconds }) => {
-  const formatTime = (time) => {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor(time % 3600 / 60);
-    const seconds = Math.floor(minutes / 60);
-    return `
-      ${hours.toString().padStart(2, "0")}
-      :${minutes.toString().padStart(2, "0")}
-      :${seconds.toString().padStart(2, "0")}`;
-  };
+const Display = ({ timer }) => {
   return (
     <div className="display">
-      <p>Remaining Time: {formatTime(remainingSeconds)}</p>
+      <p>
+        Remaining Time:{" "}
+        {(timer.hours > 9 ? timer.hours : "0" + timer.hours) +
+          ":" +
+          (timer.minutes > 9 ? timer.minutes : "0" + timer.minutes) +
+          ":" +
+          (timer.second > 9 ? timer.second : "0" + timer.second)}
+      </p>
     </div>
   );
 };

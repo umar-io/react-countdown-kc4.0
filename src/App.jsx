@@ -1,52 +1,58 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Input from "./component/Input";
 import Display from "./component/Display";
 import Controller from "./component/Controller";
 const App = () => {
-  const [totalSeconds, setTotalSeconds] = useState(0);
-  const [remainingSeconds, setRemainingSeconds] = useState(0);
-  const [timerActive, setTimerActive] = useState(false);
-  const [timerPaused, setTimerPaused] = useState(false);
+  const Ref = useRef(null);
 
-  const startTimer = () => {
-    setTimerActive(true);
-    setTimerPaused(false);
+  const [timer, setTimer] = useState({
+    total: "",
+    hours: "0",
+    minutes: "0",
+    second: "0",
+  });
+
+  const getRemainingTime = (seconds) => {
+    const total = seconds;
+    const second = Math.floor(total % 60);
+    const minutes = Math.floor((total / 60) % 60);
+    const hours = Math.floor((total / 60 / 60) % 24);
+    return {
+      total,
+      hours,
+      minutes,
+      second,
+    };
   };
 
-  const pauseTimer = () => {
-    setTimerPaused(true);
+  const startTimer = (seconds) => {
+    let { total, hours, minutes, second } = getRemainingTime(seconds);
+    if (total >= 0) {
+      setTimer(hours + ":" + minutes + ":" + second);
+    }
   };
 
-  const resetTimer = () => {
-    setTimerActive(false);
-    setTimerPaused(false);
-    setRemainingSeconds(totalSeconds);
-  };
+  const resetTimer = (e) => {
+    setTimer({
+      total: "",
+      hours: "0",
+      minutes: "0",
+      second: "0",
+    });
 
-  useEffect(() => {
-    let intervalId;
-    if (timerActive && !timerPaused && remainingSeconds > 0) {
-      intervalId = setInterval(() => {
-          setRemainingSeconds(prevSeconds => prevSeconds - 1)
-      }, 1000)
-  } else if (remainingSeconds === 0) {
-      clearInterval(intervalId)
-  }
-    return () => clearInterval(intervalId);
-  }, [timerActive, timerPaused, remainingSeconds]);
+    if (Ref.current) clearInterval(Ref.current);
+    const id = setInterval(() => {
+      startTimer(e);
+    }, 1000);
+    Ref.current = id;
+  };
 
   return (
     <div className="container">
       <h3>Countdown Timer</h3>
-      <Display remainingSeconds={remainingSeconds} />
-      <Input setTotalSeconds={setTotalSeconds} resetTimer={resetTimer} />
-      <Controller
-        timerActive={timerActive}
-        timerPaused={timerPaused}
-        startTimer={startTimer}
-        pauseTimer={pauseTimer}
-        resetTimer={resetTimer}
-      />
+      <Display timer={timer} />
+      <Input getRemainingTime={getRemainingTime} setTimer={setTimer} />
+      <Controller startTimer={startTimer} resetTimer={resetTimer} />
     </div>
   );
 };

@@ -1,11 +1,9 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Input from "./component/Input";
 import Display from "./component/Display";
 import Controller from "./component/Controller";
 
 const App = () => {
-  const Ref = useRef(null);
-
   const [timer, setTimer] = useState({
     total: "00",
     hours: "00",
@@ -32,7 +30,7 @@ const App = () => {
     setTimer(formattedTime);
   };
 
-  const resetTimer = (e) => {  
+  const resetTimer = (e) => {
     setCounting(false);
 
     setTimer({
@@ -41,12 +39,6 @@ const App = () => {
       minutes: "00",
       second: "00",
     });
-
-    if (Ref.current) clearInterval(Ref.current);
-    const id = setInterval(() => {
-      startTimer(e);
-    }, 1000);
-    Ref.current = id;
   };
 
   const [counting, setCounting] = useState(false);
@@ -67,7 +59,6 @@ const App = () => {
       minutes: "00",
       second: "00",
     });
-
   };
 
   useEffect(() => {

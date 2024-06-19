@@ -32,7 +32,9 @@ const App = () => {
     setTimer(formattedTime);
   };
 
-  const resetTimer = (e) => {
+  const resetTimer = (e) => {  
+    setCounting(false);
+
     setTimer({
       total: "0",
       hours: "00",

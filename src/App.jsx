@@ -30,7 +30,7 @@ const App = () => {
     setTimer(formattedTime);
   };
 
-  const resetTimer = (e) => {
+  const resetTimer = () => {
     setCounting(false);
 
     setTimer({

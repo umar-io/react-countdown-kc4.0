@@ -7,14 +7,11 @@ const Input = ({ getRemainingTime, setTimer }) => {
   const submitSeconds = (e) => {
     e.preventDefault();
     if (seconds !== "") {
-
       setTimer(getRemainingTime(seconds));
 
       setSeconds({
         seconds: "",
       });
-
-
     } else {
       alert("seconds field cannot be empty!!");
     }
